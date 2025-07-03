@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, MapPin, Clock, Mail, Phone, CheckCircle, Building2, TrendingUp, DollarSign, Shield } from 'lucide-react';
+import { Calendar, MapPin, Clock, Mail, Phone, CheckCircle, Building2, TrendingUp, DollarSign, Shield, X, Star, Users, Award } from 'lucide-react';
 
 interface FormData {
   name: string;
@@ -23,6 +23,7 @@ function App() {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isImageZoomed, setIsImageZoomed] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -66,31 +67,39 @@ ${formData.name}
     window.open(`https://wa.me/971501378020?text=${message}`, '_blank');
   };
 
+  const openImageZoom = () => {
+    setIsImageZoomed(true);
+  };
+
+  const closeImageZoom = () => {
+    setIsImageZoomed(false);
+  };
+
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-black text-white">
-        <div className="max-w-2xl mx-auto px-6 py-16">
+        <div className="max-w-2xl mx-auto px-4 py-16">
           <div className="text-center">
             <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle className="w-8 h-8 text-green-400" />
             </div>
-            <h1 className="text-3xl font-semibold text-white mb-4">Thank you for your RSVP</h1>
-            <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+            <h1 className="text-2xl font-bold text-white mb-4">Thank You for Your RSVP</h1>
+            <p className="text-base text-gray-300 mb-8 leading-relaxed max-w-xl mx-auto">
               Your response has been prepared. Please check your email client to send the RSVP to Rajeshwari.
             </p>
-            <div className="space-y-4">
+            <div className="space-y-3 max-w-sm mx-auto">
               <button
                 onClick={handleWhatsAppContact}
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
               >
                 <Phone className="w-5 h-5" />
                 Contact via WhatsApp
               </button>
               <button
                 onClick={() => setIsSubmitted(false)}
-                className="w-full bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200"
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200"
               >
-                Back to form
+                Back to Form
               </button>
             </div>
           </div>
@@ -101,132 +110,227 @@ ${formData.name}
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Image Zoom Modal */}
+      {isImageZoomed && (
+        <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4">
+          <div className="relative max-w-6xl max-h-full">
+            <button
+              onClick={closeImageZoom}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors bg-gray-800 hover:bg-gray-700 rounded-full p-2"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <img 
+              src="/joha.jpg" 
+              alt="Rajeshwari Madhavan - Full Size" 
+              className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <header className="border-b border-gray-800">
-        <div className="max-w-6xl mx-auto px-6 py-4">
+      <header className="border-b border-gray-800 bg-black/90 backdrop-blur-sm sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 py-3">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <Building2 className="w-7 h-7 text-white" />
-              <span className="text-xl font-semibold text-white">H.O.M.E Properties</span>
+              <Building2 className="w-6 h-6 text-white" />
+              <span className="text-lg font-bold text-white">H.O.M.E Properties</span>
             </div>
             <div className="text-right">
-              <div className="text-sm text-gray-400">In partnership with</div>
-              <div className="text-lg font-semibold text-white">DANUBE</div>
+              <div className="text-xs text-gray-400 mb-1">In partnership with</div>
+              <div className="text-sm font-bold text-white">DANUBE</div>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        {/* Main Invitation */}
-        <div className="text-center mb-16">
-          <div className="mb-8">
-            <div className="w-52 h-52 mx-auto mb-6 rounded-full overflow-hidden border-4 border-gray-700">
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        {/* Hero Section with Profile Image */}
+        <div className="text-center mb-12">
+          {/* Profile Image */}
+          <div className="relative mb-6">
+            <div 
+              className="w-full max-w-4xl mx-auto rounded-2xl overflow-hidden border-2 border-gray-700 cursor-pointer hover:border-gray-500 transition-all duration-300 group shadow-xl"
+              onClick={openImageZoom}
+            >
               <img 
                 src="/joha.jpg" 
-                alt="Rajeshwari Madhavan" 
-                className="w-full h-full object-cover"
+                alt="Rajeshwari Madhavan - Click to enlarge" 
+                className="w-full h-[300px] object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                title="Click to enlarge"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-6">
+                <div className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium">
+                  Click to enlarge
+                </div>
+              </div>
             </div>
-            <h3 className="text-xl font-semibold text-white mb-1">Rajeshwari Madhavan</h3>
-            <p className="text-gray-400">Property Consultant</p>
+            
+            {/* Profile Info */}
+            <div className="mt-4">
+              <h2 className="text-xl font-bold text-white mb-1">Rajeshwari Madhavan</h2>
+              <p className="text-sm text-gray-300 mb-1">Senior Property Consultant</p>
+              <div className="flex items-center justify-center gap-2 text-gray-400">
+                <Award className="w-4 h-4" />
+                <span className="text-sm">H.O.M.E Properties Dubai</span>
+              </div>
+            </div>
           </div>
 
+          {/* Event Title */}
           <div className="mb-8">
-            <p className="text-lg text-gray-400 italic mb-6">You are invited</p>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
-              Dubai Real Estate Investment Roadshow
+            <p className="text-sm text-gray-400 italic mb-4">You are exclusively invited to</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">
+              Dubai Real Estate
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                Investment Roadshow
+              </span>
             </h1>
+            <p className="text-base text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Join me for an exclusive opportunity to discover premium investment properties 
+              in Dubai's thriving real estate market
+            </p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-8 text-gray-300 mb-12">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              <span className="font-medium">5th & 6th July 2025</span>
+          {/* Event Details */}
+          <div className="grid md:grid-cols-3 gap-4 text-gray-300 mb-8">
+            <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-4 hover:bg-gray-900/70 transition-colors">
+              <Calendar className="w-6 h-6 mx-auto mb-2 text-blue-400" />
+              <h3 className="text-sm font-semibold text-white mb-1">Dates</h3>
+              <p className="text-sm">5th & 6th July 2025</p>
             </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-5 h-5" />
-              <span className="font-medium">NH Johannesburg Sandton Hotel</span>
+            <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-4 hover:bg-gray-900/70 transition-colors">
+              <MapPin className="w-6 h-6 mx-auto mb-2 text-green-400" />
+              <h3 className="text-sm font-semibold text-white mb-1">Venue</h3>
+              <p className="text-sm">NH Johannesburg Sandton Hotel</p>
             </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5" />
-              <span className="font-medium">10:00 AM – 7:00 PM</span>
+            <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-4 hover:bg-gray-900/70 transition-colors">
+              <Clock className="w-6 h-6 mx-auto mb-2 text-purple-400" />
+              <h3 className="text-sm font-semibold text-white mb-1">Time</h3>
+              <p className="text-sm">10:00 AM – 7:00 PM</p>
             </div>
-          </div>
-
-          <p className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-12">
-            I'm thrilled to personally invite you to this exclusive event where you'll gain first-hand insights 
-            into premium investment opportunities in Dubai's booming property market.
-          </p>
-        </div>
-
-        {/* Event Highlights */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          <div className="bg-gray-900 border border-gray-800 p-8 rounded-xl">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-blue-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-white">Investment Opportunities</h3>
-            </div>
-            <ul className="space-y-3 text-gray-300">
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <span>Properties starting from USD 100,000</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <span>1% flexible payment plans</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <span>8-10% rental ROI potential</span>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-gray-900 border border-gray-800 p-8 rounded-xl">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
-                <Shield className="w-5 h-5 text-green-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-white">Tax Benefits</h3>
-            </div>
-            <ul className="space-y-3 text-gray-300">
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <span>0% capital gains tax</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <span>No property tax</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-                <span>Exclusive launch deals</span>
-              </li>
-            </ul>
           </div>
         </div>
 
-        <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-8 text-center mb-16">
-          <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <DollarSign className="w-6 h-6 text-blue-400" />
+        {/* Investment Opportunities */}
+        <div className="mb-10">
+          <h2 className="text-2xl font-bold text-white text-center mb-8">Why Invest in Dubai?</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-gradient-to-br from-blue-900/30 to-blue-800/20 border border-blue-700/30 rounded-xl p-4 hover:from-blue-900/40 hover:to-blue-800/30 transition-all duration-300">
+              <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center mb-3">
+                <DollarSign className="w-4 h-4 text-blue-400" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Low Entry Point</h3>
+              <p className="text-sm text-gray-300 mb-2">Properties starting from</p>
+              <p className="text-xl font-bold text-blue-400">USD 100,000</p>
+            </div>
+
+            <div className="bg-gradient-to-br from-green-900/30 to-green-800/20 border border-green-700/30 rounded-xl p-4 hover:from-green-900/40 hover:to-green-800/30 transition-all duration-300">
+              <div className="w-8 h-8 bg-green-500/20 rounded-lg flex items-center justify-center mb-3">
+                <TrendingUp className="w-4 h-4 text-green-400" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">High Returns</h3>
+              <p className="text-sm text-gray-300 mb-2">Rental ROI potential</p>
+              <p className="text-xl font-bold text-green-400">8-10%</p>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 border border-purple-700/30 rounded-xl p-4 hover:from-purple-900/40 hover:to-purple-800/30 transition-all duration-300">
+              <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center mb-3">
+                <Shield className="w-4 h-4 text-purple-400" />
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">Tax Benefits</h3>
+              <p className="text-sm text-gray-300 mb-2">Capital gains & property tax</p>
+              <p className="text-xl font-bold text-purple-400">0%</p>
+            </div>
           </div>
-          <p className="text-lg text-gray-300 leading-relaxed">
-            <strong className="text-white">Seats are limited!</strong> Whether you're looking for luxury living, rental income, 
-            or long-term capital appreciation, this event is your gateway to Dubai's thriving market.
+        </div>
+
+        {/* Key Benefits */}
+        <div className="mb-10">
+          <div className="bg-gradient-to-r from-gray-900/50 to-gray-800/50 border border-gray-700 rounded-2xl p-6">
+            <div className="text-center mb-6">
+              <Star className="w-8 h-8 text-yellow-400 mx-auto mb-3" />
+              <h2 className="text-2xl font-bold text-white mb-3">Exclusive Event Benefits</h2>
+              <p className="text-sm text-gray-300 max-w-2xl mx-auto">
+                This roadshow offers unique advantages you won't find anywhere else
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-4 h-4 text-green-400 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-white mb-1">1% Flexible Payment Plans</h4>
+                    <p className="text-xs text-gray-300">Start your investment journey with minimal upfront costs</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-4 h-4 text-green-400 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-white mb-1">Exclusive Launch Deals</h4>
+                    <p className="text-xs text-gray-300">Special pricing and incentives available only at this event</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-4 h-4 text-green-400 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-white mb-1">Personal Consultation</h4>
+                    <p className="text-xs text-gray-300">One-on-one guidance tailored to your investment goals</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-4 h-4 text-green-400 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-white mb-1">Premium Property Portfolio</h4>
+                    <p className="text-xs text-gray-300">Access to DANUBE's most sought-after developments</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-4 h-4 text-green-400 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-white mb-1">Market Insights</h4>
+                    <p className="text-xs text-gray-300">Latest trends and forecasts from Dubai's property experts</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-4 h-4 text-green-400 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-sm font-semibold text-white mb-1">Limited Seats Available</h4>
+                    <p className="text-xs text-gray-300">Intimate setting ensures personalized attention</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Urgency Section */}
+        <div className="bg-gradient-to-r from-red-900/20 to-orange-900/20 border border-red-700/30 rounded-2xl p-6 text-center mb-10">
+          <Users className="w-10 h-10 text-red-400 mx-auto mb-3" />
+          <h2 className="text-xl font-bold text-white mb-3">Seats Are Limited!</h2>
+          <p className="text-sm text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            This exclusive roadshow has limited capacity to ensure personalized attention for each attendee. 
+            Whether you're seeking luxury living, rental income, or long-term capital appreciation, 
+            this event is your gateway to Dubai's thriving property market.
           </p>
         </div>
 
         {/* RSVP Form */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-8">
-          <h2 className="text-3xl font-bold text-white text-center mb-8">RSVP</h2>
+        <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-gray-700 rounded-2xl p-6">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-white mb-3">Secure Your Seat</h2>
+            <p className="text-sm text-gray-300">Complete the form below to confirm your attendance</p>
+          </div>
           
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="max-w-3xl mx-auto space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-300 mb-2">
                   Full Name
                 </label>
                 <input
@@ -236,13 +340,13 @@ ${formData.name}
                   required
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-white placeholder-gray-500"
+                  className="w-full px-4 py-3 bg-black border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-white placeholder-gray-500 text-sm"
                   placeholder="Enter your full name"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-300 mb-2">
                   Email Address
                 </label>
                 <input
@@ -252,14 +356,14 @@ ${formData.name}
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-white placeholder-gray-500"
+                  className="w-full px-4 py-3 bg-black border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-white placeholder-gray-500 text-sm"
                   placeholder="Enter your email"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="phone" className="block text-sm font-semibold text-gray-300 mb-2">
                 Phone Number
               </label>
               <input
@@ -269,17 +373,17 @@ ${formData.name}
                 required
                 value={formData.phone}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-white placeholder-gray-500"
+                className="w-full px-4 py-3 bg-black border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-white placeholder-gray-500 text-sm"
                 placeholder="Enter your phone number"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-3">
+              <label className="block text-sm font-semibold text-gray-300 mb-3">
                 We'd be delighted to have you join us—kindly respond to confirm your availability.
               </label>
-              <div className="grid grid-cols-2 gap-4">
-                <label className="flex items-center p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <label className="flex items-center p-4 border border-gray-600 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-all group">
                   <input
                     type="radio"
                     name="attendance"
@@ -287,11 +391,14 @@ ${formData.name}
                     required
                     checked={formData.attendance === 'yes'}
                     onChange={handleInputChange}
-                    className="mr-3 text-blue-500 focus:ring-blue-500 bg-black border-gray-600"
+                    className="mr-3 w-4 h-4 text-green-500 focus:ring-green-500 bg-black border-gray-600"
                   />
-                  <span className="font-medium text-gray-300">Yes, I'll attend</span>
+                  <div>
+                    <span className="text-sm font-semibold text-white group-hover:text-green-400 transition-colors">Yes, I'll attend</span>
+                    <p className="text-gray-400 text-xs mt-1">Count me in for this exclusive event</p>
+                  </div>
                 </label>
-                <label className="flex items-center p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors">
+                <label className="flex items-center p-4 border border-gray-600 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-all group">
                   <input
                     type="radio"
                     name="attendance"
@@ -299,20 +406,23 @@ ${formData.name}
                     required
                     checked={formData.attendance === 'no'}
                     onChange={handleInputChange}
-                    className="mr-3 text-red-500 focus:ring-red-500 bg-black border-gray-600"
+                    className="mr-3 w-4 h-4 text-red-500 focus:ring-red-500 bg-black border-gray-600"
                   />
-                  <span className="font-medium text-gray-300">No, I can't attend</span>
+                  <div>
+                    <span className="text-sm font-semibold text-white group-hover:text-red-400 transition-colors">No, I can't attend</span>
+                    <p className="text-gray-400 text-xs mt-1">Unfortunately, I won't be able to make it</p>
+                  </div>
                 </label>
               </div>
             </div>
 
             {formData.attendance === 'yes' && (
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-3">
+                <label className="block text-sm font-semibold text-gray-300 mb-3">
                   Which date(s) will you attend?
                 </label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <label className="flex items-center p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <label className="flex items-center p-3 border border-gray-600 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-all">
                     <input
                       type="radio"
                       name="preferredDate"
@@ -320,11 +430,11 @@ ${formData.name}
                       required={formData.attendance === 'yes'}
                       checked={formData.preferredDate === '5th'}
                       onChange={handleInputChange}
-                      className="mr-3 text-blue-500 focus:ring-blue-500 bg-black border-gray-600"
+                      className="mr-3 w-4 h-4 text-blue-500 focus:ring-blue-500 bg-black border-gray-600"
                     />
-                    <span className="font-medium text-gray-300">5th July only</span>
+                    <span className="text-sm font-semibold text-white">5th July only</span>
                   </label>
-                  <label className="flex items-center p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors">
+                  <label className="flex items-center p-3 border border-gray-600 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-all">
                     <input
                       type="radio"
                       name="preferredDate"
@@ -332,11 +442,11 @@ ${formData.name}
                       required={formData.attendance === 'yes'}
                       checked={formData.preferredDate === '6th'}
                       onChange={handleInputChange}
-                      className="mr-3 text-blue-500 focus:ring-blue-500 bg-black border-gray-600"
+                      className="mr-3 w-4 h-4 text-blue-500 focus:ring-blue-500 bg-black border-gray-600"
                     />
-                    <span className="font-medium text-gray-300">6th July only</span>
+                    <span className="text-sm font-semibold text-white">6th July only</span>
                   </label>
-                  <label className="flex items-center p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors">
+                  <label className="flex items-center p-3 border border-gray-600 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-all">
                     <input
                       type="radio"
                       name="preferredDate"
@@ -344,20 +454,20 @@ ${formData.name}
                       required={formData.attendance === 'yes'}
                       checked={formData.preferredDate === 'both'}
                       onChange={handleInputChange}
-                      className="mr-3 text-blue-500 focus:ring-blue-500 bg-black border-gray-600"
+                      className="mr-3 w-4 h-4 text-blue-500 focus:ring-blue-500 bg-black border-gray-600"
                     />
-                    <span className="font-medium text-gray-300">Both days</span>
+                    <span className="text-sm font-semibold text-white">Both days</span>
                   </label>
                 </div>
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-3">
+              <label className="block text-sm font-semibold text-gray-300 mb-3">
                 Preferred Contact Method
               </label>
-              <div className="grid grid-cols-2 gap-4">
-                <label className="flex items-center p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <label className="flex items-center p-3 border border-gray-600 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-all">
                   <input
                     type="radio"
                     name="contactMethod"
@@ -365,12 +475,12 @@ ${formData.name}
                     required
                     checked={formData.contactMethod === 'email'}
                     onChange={handleInputChange}
-                    className="mr-3 text-blue-500 focus:ring-blue-500 bg-black border-gray-600"
+                    className="mr-3 w-4 h-4 text-blue-500 focus:ring-blue-500 bg-black border-gray-600"
                   />
-                  <Mail className="w-5 h-5 mr-2 text-gray-400" />
-                  <span className="font-medium text-gray-300">Email</span>
+                  <Mail className="w-4 h-4 mr-2 text-gray-400" />
+                  <span className="text-sm font-semibold text-white">Email</span>
                 </label>
-                <label className="flex items-center p-4 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors">
+                <label className="flex items-center p-3 border border-gray-600 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-all">
                   <input
                     type="radio"
                     name="contactMethod"
@@ -378,32 +488,32 @@ ${formData.name}
                     required
                     checked={formData.contactMethod === 'whatsapp'}
                     onChange={handleInputChange}
-                    className="mr-3 text-green-500 focus:ring-green-500 bg-black border-gray-600"
+                    className="mr-3 w-4 h-4 text-green-500 focus:ring-green-500 bg-black border-gray-600"
                   />
-                  <Phone className="w-5 h-5 mr-2 text-gray-400" />
-                  <span className="font-medium text-gray-300">WhatsApp</span>
+                  <Phone className="w-4 h-4 mr-2 text-gray-400" />
+                  <span className="text-sm font-semibold text-white">WhatsApp</span>
                 </label>
               </div>
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="message" className="block text-sm font-semibold text-gray-300 mb-2">
                 Additional Message (Optional)
               </label>
               <textarea
                 id="message"
                 name="message"
-                rows={4}
+                rows={3}
                 value={formData.message}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-white placeholder-gray-500"
+                className="w-full px-4 py-3 bg-black border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-white placeholder-gray-500 text-sm"
                 placeholder="Any questions or special requirements?"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-white hover:bg-gray-100 text-black font-medium py-4 px-8 rounded-lg transition-colors duration-200"
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-lg transition-all duration-200 text-base shadow-lg hover:shadow-xl transform hover:scale-105"
             >
               Send RSVP
             </button>
@@ -411,20 +521,20 @@ ${formData.name}
         </div>
 
         {/* Contact Information */}
-        <div className="mt-16 text-center">
-          <h3 className="text-2xl font-semibold text-white mb-8">Contact Information</h3>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <Mail className="w-6 h-6 text-gray-400 mx-auto" />
-              <div className="font-medium text-white">Email</div>
-              <a href="mailto:rajeshwari@homepropertiesdxb.com" className="text-blue-400 hover:text-blue-300 transition-colors">
+        <div className="mt-12 text-center">
+          <h3 className="text-xl font-bold text-white mb-6">Get in Touch</h3>
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-4 hover:bg-gray-900/70 transition-colors">
+              <Mail className="w-6 h-6 text-blue-400 mx-auto mb-2" />
+              <div className="text-sm font-semibold text-white mb-2">Email</div>
+              <a href="mailto:rajeshwari@homepropertiesdxb.com" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
                 rajeshwari@homepropertiesdxb.com
               </a>
             </div>
-            <div className="space-y-2">
-              <Phone className="w-6 h-6 text-gray-400 mx-auto" />
-              <div className="font-medium text-white">WhatsApp / Phone</div>
-              <a href="tel:+971501378020" className="text-blue-400 hover:text-blue-300 transition-colors">
+            <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-4 hover:bg-gray-900/70 transition-colors">
+              <Phone className="w-6 h-6 text-green-400 mx-auto mb-2" />
+              <div className="text-sm font-semibold text-white mb-2">WhatsApp / Phone</div>
+              <a href="tel:+971501378020" className="text-sm text-green-400 hover:text-green-300 transition-colors">
                 +971 50 137 8020
               </a>
             </div>
